@@ -1,6 +1,6 @@
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
-if true then return {} end
+-- if true then return {} end
 
 -- every spec file under the "plugins" directory will be loaded automatically by lazy.nvim
 --
@@ -10,16 +10,15 @@ if true then return {} end
 -- * override the configuration of LazyVim plugins
 return {
   -- add gruvbox
-  { "ellisonleao/gruvbox.nvim" },
 
   -- Configure LazyVim to load gruvbox
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "gruvbox",
-    },
-  },
-
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     colorscheme = "gruvbox",
+  --   },
+  -- },
+  --
   -- change trouble config
   {
     "folke/trouble.nvim",
@@ -102,7 +101,7 @@ return {
     dependencies = {
       "jose-elias-alvarez/typescript.nvim",
       init = function()
-        require("lazyvim.util").on_attach(function(_, buffer)
+        require("lazyvim.util").lsp.on_attach(function(_, buffer)
           -- stylua: ignore
           vim.keymap.set( "n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
           vim.keymap.set("n", "<leader>cR", "TypescriptRenameFile", { desc = "Rename File", buffer = buffer })
@@ -144,6 +143,7 @@ return {
         "bash",
         "html",
         "javascript",
+        "gopls", 
         "json",
         "lua",
         "markdown",
@@ -208,6 +208,8 @@ return {
         "shellcheck",
         "shfmt",
         "flake8",
+        "clangd",
+        "gopls"
       },
     },
   },
@@ -263,4 +265,13 @@ return {
       })
     end,
   },
+
+require("lspconfig").clangd.setup({
+  cmd = {
+    "clangd",
+    "--include-directory=/opt/homebrew/Cellar/sfml/2.6.1/include",
+    "--include-directory=/opt/homebrew/Cellar/sfml/2.6.1/lib",
+    -- Add other flags as needed
+  },
+})
 }
